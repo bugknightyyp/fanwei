@@ -120,3 +120,6 @@ window.ebuilderSDK.getPageSDK().on('formReady',  (args) => {
       const value = data.value;
   });
 });
+
+// 获取表单数据
+https://unitytest.sz.gov.cn/yth/api/odoc/form/core/getFormLayout?formId=897161102876331474
