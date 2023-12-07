@@ -201,6 +201,42 @@ const ovFlowPagePropsFn = (props) => {
 // 对流程详情pc端生效
 regOvProps('weappWorkflow', 'FPMainTab', ovFlowPagePropsFn, 0);
 
+// formReady 并不能保证form渲染完，只能通过定时器来尽可能快的更新
+const pageSdk = window.ebuilderSDK.getPageSDK();  //当前页面SDK
+pageSdk.on("formReady", function(params) {
+
+  const weFormSdk = window.WeFormSDK.getWeFormInstance();
+  function getFieldValueByKey(key){
+    const fieldMark = weFormSdk.convertFieldNameToId(key);
+    const fieldValue = weFormSdk.getFieldValue(fieldMark);
+    return fieldValue
+  }
+  let gkxsValue = getFieldValueByKey('gksx')
+
+  const wffpSdk = window.weappWorkflow;
+  const {isCreate = true} = wffpSdk?.getCurrentFlowPageSDK()?.getBaseParam(); 
+  
+  function conditon(){
+    return !isCreate  &&  gkxsValue == '1'
+  }
+
+  let timer;
+  function udateState(){
+    let el = document.getElementById("S6v06MSn9u")
+    if(el) {
+       el.click();
+       clearTimeout(timer)
+    } else {
+       timer = setTimeout(udateState, 1000)
+    }
+     
+    
+  }
+
+  if(conditon()){
+    timer = setTimeout(udateState, 1000)
+  }
+});
 
 
 
