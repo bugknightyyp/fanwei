@@ -124,3 +124,83 @@ window.ebuilderSDK.getPageSDK().on('formReady',  (args) => {
 // 获取表单数据
 https://unitytest.sz.gov.cn/yth/api/odoc/form/core/getFormLayout?formId=897161102876331474
 ebuilderSDK.getPageSDK().getCompInstance('')
+import React from 'react';
+import { regOvComponent,regOvProps  } from '@weapp/utils';
+import { asyncImport } from '@weapp/ecodesdk';
+
+
+
+
+// regOvProps('weappUi', 'Menu', (props) => {
+  
+//    let {href}  = window.location;
+   
+//       if(props.weId == '_un1z9t') {
+//         window.ebuilderSDK.getPageSDK().on('formReady', (args) => {
+//         // 获取表单示例
+//           const weFormSdk = window.WeFormSDK.getWeFormInstance();
+          
+//           // 获取主表字段fieldId
+//           const fieldMark = weFormSdk.convertFieldNameToId("gksx");
+//           const fieldValue = weFormSdk.getFieldValue(fieldMark);
+
+//           const wffpSdk = window.weappWorkflow;
+//           const params = wffpSdk.getCurrentFlowPageSDK().getBaseParam(); 
+
+//           // const pageSdk = window.ebuilderSDK.getPageSDK();  //当前页面SDK
+//           // const dd =  window.weappWorkflow.getFlowPageSDK().baseStore
+//           if(!params.isCreate && fieldValue == '1'){
+//               props.value = "S6v06MSn9u"
+//           }
+          
+//       });
+
+//     }
+//   return props;
+// }, 0);
+let isFirst = true;
+const ovFlowPagePropsFn = (props) => {
+	//根据业务需求限定代码生效范围，常用参数含isCreate、workflowId、reqeustId、apiModule
+	const { isCreate, workflowId, reqeustId, apiModule } = props.baseParam || {};
+	//仅对指定工作流Id生效
+	if (['897161132793004033','923874755635322882', '939095252314742786'].includes(workflowId)) {
+		//此时可以获取到sdk实例，操作js-sdk对象等
+		const wffpSdk = window.weappWorkflow.getFlowPageSDK();
+		//需要限制isFirst，多次render应该仅做一次事件注册
+		//此处如果不包ready会导致保存不刷页面情况下，注册事件失效（下一步会提供不失效方案）
+		// isFirst && wffpSdk.ready(() => {
+		// 		const pageSdk = window.ebuilderSDK.getPageSDK();
+		// 					pageSdk.on("compLoad", "ef3243f8b8dd4931966c57cd12e25aa6", function(comp) {
+		// 					document.getElementById("S6v06MSn9u").click();
+		// 	});
+
+		
+				
+		// 		// pageSdk.on('formLoad', (args) => {
+		// 		// 	debugger
+		// 		// 	// const weFormSdk = window.WeFormSDK.getWeFormInstance();
+		// 		// 	// debugger
+		// 		// 	document.getElementById("S6v06MSn9u").click();
+		// 		// });
+		// });
+		// isFirst = false;
+
+			wffpSdk.registerHookEvent("FormRenderComplete", (params)=>{
+				setTimeout(() => {
+					document.getElementById("S6v06MSn9u")?.click();
+				}, 1000 * 10)
+				// debugger
+					/* TODO 自定义逻辑 */
+			});
+	
+	}
+	//可实现原组件props复写
+	return props;
+}
+
+// 对流程详情pc端生效
+regOvProps('weappWorkflow', 'FPMainTab', ovFlowPagePropsFn, 0);
+
+
+
+
