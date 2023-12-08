@@ -238,5 +238,39 @@ pageSdk.on("formReady", function(params) {
   }
 });
 
+const pageSdk = window.ebuilderSDK.getPageSDK();  //当前页面SDK
+pageSdk.on("formReady", function(params) {
 
+  const weFormSdk = window.WeFormSDK.getWeFormInstance();
+  function getFieldValueByKey(key){
+    const fieldMark = weFormSdk.convertFieldNameToId(key);
+    const fieldValue = weFormSdk.getFieldValue(fieldMark);
+    return fieldValue
+  }
+  let gkxsValue = getFieldValueByKey('gksx')
+
+  const wffpSdk = window.weappWorkflow;
+  const {isCreate = true} = wffpSdk?.getCurrentFlowPageSDK()?.getBaseParam(); 
+  
+  function conditon(){
+    return !isCreate  &&  gkxsValue == '1'
+  }
+
+  let timer;
+  const interval = 600
+  function udateState(){
+    let el = document.getElementById("S6v06MSn9u")
+    if(el) {
+       el.click();
+       clearTimeout(timer)
+    } else {
+       timer = setTimeout(udateState, interval)
+    }
+    
+  }
+
+  if(conditon()){
+    timer = setTimeout(udateState, interval)
+  }
+});
 
