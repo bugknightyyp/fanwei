@@ -1,4 +1,4 @@
-window.ebuilderSDK.getPageSDK().on('formReady',  (args) => {
+ewindow.ebuilderSDK.getPageSDK().on('formReady',  (args) => {
   const weFormSdk = window.WeFormSDK.getWeFormInstance();//获取实例
   try {
     
@@ -273,4 +273,68 @@ pageSdk.on("formReady", function(params) {
     timer = setTimeout(udateState, interval)
   }
 });
+
+import React from 'react';
+import { regOvComponent,regOvProps  } from '@weapp/utils';
+import { asyncImport } from '@weapp/ecodesdk';
+
+const ovFlowPagePropsFn = (props) => {
+	//根据业务需求限定代码生效范围，常用参数含isCreate、workflowId、reqeustId、apiModule
+	const { isCreate, workflowId, reqeustId, apiModule } = props.baseParam || {};
+	//仅对指定工作流Id生效
+  let {href}  = window.location;
+	if (href.includes('/odoc')) {
+		//此时可以获取到sdk实例，操作js-sdk对象等
+		const wffpSdk = window.weappWorkflow.getFlowPageSDK();
+		//需要限制isFirst，多次render应该仅做一次事件注册
+		//此处如果不包ready会导致保存不刷页面情况下，注册事件失效（下一步会提供不失效方案）
+		wffpSdk.ready(() => {
+      const pageSdk = window.ebuilderSDK.getPageSDK();  //当前页面SDK
+      pageSdk.on("formReady", function(params) {
+
+        const weFormSdk = window.WeFormSDK.getWeFormInstance();
+        function getFieldValueByKey(key){
+          const fieldMark = weFormSdk.convertFieldNameToId(key);
+          const fieldValue = weFormSdk.getFieldValue(fieldMark);
+          return fieldValue
+        }
+        // let gkxsValue = getFieldValueByKey('gksx')
+
+        const wffpSdk = window.weappWorkflow;
+        const {isCreate = true} = wffpSdk?.getCurrentFlowPageSDK()?.getBaseParam(); 
+        
+        function conditon(){
+          return !isCreate // &&  gkxsValue == '1'
+        }
+
+        let timer;
+        const interval = 600
+        function udateState(){
+          let el = document.querySelector(".wffp-frame-content .ui-menu-tab .ui-menu-list")
+          if(el) {
+            let temp = el.querySelector('.ui-menu-list-item:nth-child(2)')
+            if(temp){
+              temp.click();
+            }
+            clearTimeout(timer)
+          } else {
+            timer = setTimeout(udateState, interval)
+          }
+          
+        }
+
+        if(conditon()){
+          timer = setTimeout(udateState, interval)
+        }
+      });
+  	})
+  }
+	
+	return props;
+};
+
+// 对流程详情pc端生效
+regOvProps('weappWorkflow', 'FPMainTab', ovFlowPagePropsFn, 0);
+
+
 
