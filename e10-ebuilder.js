@@ -337,4 +337,37 @@ const ovFlowPagePropsFn = (props) => {
 regOvProps('weappWorkflow', 'FPMainTab', ovFlowPagePropsFn, 0);
 
 
+import axios from 'axios'
+
+// 添加响应拦截器
+axios.interceptors.response.use(function (response) {
+    // 对响应数据做点什么
+     let hash = window.location.href;
+
+    if(response.config.url==="/api/odoc/common/browser/prop/resource" ||response.config.url==="/api/hrm/common/browser/prop/resource"){
+      console.log("oldresponse",response);
+      try{
+         if(response.status=="200" && response.data.data.tabs){
+           var oldTabs = response.data.data.tabs;
+           var newTabs = [];
+           newTabs= oldTabs.filter(item =>{
+             if(item.content != "我的下属" && item.content != "所有人" && item.content != "我关注的人" && item.content != "外部联系人"){
+               return item;
+             }
+           });
+           response.data.data.tabs = newTabs;
+           console.log("newresponse",response);
+         }
+      }catch(err){
+         console.log("error response",err);
+        return response;
+      }
+    }
+    return response;
+
+}, function (error) {
+   // 对响应错误做点什么
+   return Promise.reject(error);
+}); 
+
 
