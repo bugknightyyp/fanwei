@@ -371,3 +371,10 @@ axios.interceptors.response.use(function (response) {
 }); 
 
 
+.ui-m-comment-textarea-content textarea[weid^="1ya7y7_hegdlb_4r7ssi_8phrqi_043y70_whghdp_8sjjbu_673qt5_4ndyzh"]{
+  text-indent: 2em;
+}
+
+.ui-m-comment-textarea-content textarea[weid^="1ya7y7"][weid$="_saunu9"]{
+  text-indent: 2em; 
+}
