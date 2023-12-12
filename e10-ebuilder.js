@@ -1,4 +1,4 @@
-ewindow.ebuilderSDK.getPageSDK().on('formReady',  (args) => {
+window.ebuilderSDK.getPageSDK().on('formReady',  (args) => {
   const weFormSdk = window.WeFormSDK.getWeFormInstance();//获取实例
   try {
     
@@ -6,8 +6,8 @@ ewindow.ebuilderSDK.getPageSDK().on('formReady',  (args) => {
       const qjlx_fileid = weFormSdk.convertFieldNameToId("qjlx");//获取请假类型字段id
       const kxye_fileid = weFormSdk.convertFieldNameToId("sz_65rd");//获取可休余额字段id
       const qjts_fileid = weFormSdk.convertFieldNameToId("qjts");//获取请假天数字段id
-      const qjkssj_fileid = weFormSdk.convertFieldNameToId("qjkssj");//请假开始时间字段id
-      const qjjssj_fileid = weFormSdk.convertFieldNameToId("qjjssj");//请假结束时间字段id
+      const qjkssj_fileid = weFormSdk.convertFieldNameToId("qjkssjfzzd");//请假开始时间字段id
+      const qjjssj_fileid = weFormSdk.convertFieldNameToId("qjjssjfzzd");//请假结束时间字段id
       const qjlx_value = weFormSdk.getSelectShowName(qjlx_fileid);//获取请假类型显示值
       const kxye_value = weFormSdk.getFieldValue(kxye_fileid)*1;//获取可用余额值
       const qjts_value = weFormSdk.getFieldValue(qjts_fileid)*1;//获取请假天数值
@@ -48,25 +48,26 @@ ewindow.ebuilderSDK.getPageSDK().on('formReady',  (args) => {
   const qjjssjdMark = weFormSdk.convertFieldNameToId("qjjssjd");
   const qjjssjfzzdMark = weFormSdk.convertFieldNameToId("qjjssjfzzd");
 
-   
+  const qjrqqjfzzdMark = weFormSdk.convertFieldNameToId("qjrqqjfzzd_2");
 
    function getFieldValueByKey(key){
      const fieldMark = weFormSdk.convertFieldNameToId(key);
      const fieldValue = weFormSdk.getFieldValue(fieldMark);
      return fieldValue
    }
-   function getTimeValueById(id){
+   // 0 开始时间 1 结束时间
+   function getTimeValueById(tag, id){
       // 937252238725808131 全天 937252238725808129 上午； 937252238725808130 下午
      let time;
      switch (id) {
         case 'qt':
-          time = getFieldValueByKey('qtsjfzzd')
+         time = tag === 0 ?  getFieldValueByKey('qjkssjswfzzd') : getFieldValueByKey('qjjssjxwfzzd');
           break;
         case 'sw':
-          time = getFieldValueByKey('swsjfzzd')
+          time = tag === 0 ?  getFieldValueByKey('qjkssjswfzzd') : getFieldValueByKey('qjjssjswfzzd');
           break;
         case 'xw':
-          time = getFieldValueByKey('xwsjfzzd')
+          time = tag === 0 ?  getFieldValueByKey('qjkssjxwfzzd') : getFieldValueByKey('qjjssjxwfzzd');
           break;
         default:
           break;
@@ -84,40 +85,81 @@ ewindow.ebuilderSDK.getPageSDK().on('formReady',  (args) => {
     return `${data} ${time}`
   }
 
+  let quantian = weFormSdk.getFieldValue('qjkssjswfzzd')
   // 绑定事件，对主表字段和明细表的某一行绑定
   weFormSdk.bindFieldChangeEvent(`${qjkssjMark},${qjkssjdMark},${qjjssjMark},${qjjssjdMark}`, (data) => {
-   
       // 取字段标识
       const fieldMark = data.id;
       // 取字段修改的值
       const value = data.value;
-
+     
       switch (fieldMark) {
         case qjkssjMark:
-          weFormSdk.changeFieldValue(qjkssjfzzdMark, {value: concatDateTimeStr(value, getTimeValueById(weFormSdk.getFieldValue(qjkssjdMark)))})
+          weFormSdk.changeFieldValue(qjkssjfzzdMark, {value: concatDateTimeStr(value, getTimeValueById(0, weFormSdk.getFieldValue(qjkssjdMark)))})
+          if(quantian == 'qt'){
+            weFormSdk.changeFieldValue(qjjssjfzzdMark, {value: concatDateTimeStr(weFormSdk.getFieldValue(qjkssjMark), getTimeValueById(1, quantian))});
+            weFormSdk.changeFieldValue(qjjssjMark, {value: ''});
+            weFormSdk.changeFieldValue(qjjssjdMark, {value: ''});
+          }
           break;
         case qjkssjdMark:
-          weFormSdk.changeFieldValue(qjkssjfzzdMark, {value:  concatDateTimeStr(weFormSdk.getFieldValue(qjkssjMark), getTimeValueById(value))});
+          quantian = value;
+          weFormSdk.changeFieldValue(qjkssjfzzdMark, {value:  concatDateTimeStr(weFormSdk.getFieldValue(qjkssjMark), getTimeValueById(0, value))});
+          if(value == 'qt'){
+            weFormSdk.changeFieldValue(qjjssjfzzdMark, {value: concatDateTimeStr(weFormSdk.getFieldValue(qjkssjMark), getTimeValueById(1, value))});
+            weFormSdk.changeFieldValue(qjjssjMark, {value: ''});
+            weFormSdk.changeFieldValue(qjjssjdMark, {value: ''});
+          } else {
+            weFormSdk.changeFieldValue(qjjssjfzzdMark, {value: concatDateTimeStr(weFormSdk.getFieldValue(qjjssjMark), getTimeValueById(1, value))});
+          }
           break;
         case qjjssjMark:
-          weFormSdk.changeFieldValue(qjjssjfzzdMark, {value: concatDateTimeStr(value, getTimeValueById(weFormSdk.getFieldValue(qjjssjdMark)))});
+           if(quantian == 'qt' &&  value === ''){
+            return
+          }
+          weFormSdk.changeFieldValue(qjjssjfzzdMark, {value: concatDateTimeStr(value, getTimeValueById(1, weFormSdk.getFieldValue(qjjssjdMark)))});
           break;
         case qjjssjdMark:
-          weFormSdk.changeFieldValue(qjjssjfzzdMark, {value: concatDateTimeStr(weFormSdk.getFieldValue(qjjssjMark), getTimeValueById(value))});
+         if(quantian == 'qt' &&  value === ''){
+            return
+          }
+          weFormSdk.changeFieldValue(qjjssjfzzdMark, {value: concatDateTimeStr(weFormSdk.getFieldValue(qjjssjMark), getTimeValueById(1, value))});
           break;
       
         default:
           break;
       }
   });
+
+
+
+  function debounce(fn, delay = 500) {
+      // timer 是在闭包中的
+      let timer = null;
+      
+      return function() {
+          if (timer) {
+              clearTimeout(timer)
+          }
+          timer = setTimeout(() => {
+              fn.apply(this, arguments)
+              timer = null
+          }, delay)
+      }
+  }
+  let  changeTimeRange = debounce(() => {
+    
+    weFormSdk.changeFieldValue(qjrqqjfzzdMark, {value: `${weFormSdk.getFieldValue(qjkssjfzzdMark)},${weFormSdk.getFieldValue(qjjssjfzzdMark)}`});
+  }, 600)
   // 绑定事件，对主表字段和明细表的某一行绑定
   weFormSdk.bindFieldChangeEvent(`${qjkssjfzzdMark},${qjjssjfzzdMark}`, (data) => {
-  
-   
       // 取字段标识
       const fieldMark = data.id;
       // 取字段修改的值
       const value = data.value;
+
+      // weFormSdk.changeFieldValue(qjrqqjfzzdMark, {value: `${weFormSdk.getFieldValue(qjkssjfzzdMark)},${weFormSdk.getFieldValue(qjjssjfzzdMark)}`});
+      changeTimeRange()
   });
 });
 
