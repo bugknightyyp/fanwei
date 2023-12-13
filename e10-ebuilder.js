@@ -1,4 +1,4 @@
-window.ebuilderSDK.getPageSDK().on('formReady',  (args) => {
+ewindow.ebuilderSDK.getPageSDK().on('formReady',  (args) => {
   const weFormSdk = window.WeFormSDK.getWeFormInstance();//获取实例
   try {
     
@@ -420,3 +420,32 @@ axios.interceptors.response.use(function (response) {
 .ui-m-comment-textarea-content textarea[weid^="1ya7y7"][weid$="_saunu9"]{
   text-indent: 2em; 
 }
+
+// 绑定事件
+import { regOvProps } from '@weapp/utils';
+const path = "/backend/appmanage";
+
+function popMessage(e) {
+            weappUi.Dialog.message({
+                type: 'success', // type: 'info', 'error', 'success', 'custom'
+                content: '调用成功!',
+                delay: 2000,
+              })
+          }
+regOvProps('weappUi', 'Spin', (props) => {
+  try{
+    let {pathname} = window.location;
+    if(pathname.indexOf(path)!=-1 && props.weId == '_3shoq2_eefhtv'){
+      //console.log("进来了：",props.placeholder);
+      setTimeout(() => {
+        document.querySelectorAll('.weapp-openapi-app-list .weapp-openapi-app-list-item').forEach((item, index) => {
+          item.removeEventListener("click", popMessage);
+          item.addEventListener("click", popMessage);
+        })
+      }, 1000)
+    }
+  }catch(e){
+  }
+  return props;
+  
+}, 0);
