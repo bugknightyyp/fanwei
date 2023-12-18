@@ -1,0 +1,6 @@
+function impExcel(){
+  let buttons=[];
+  let style={width:600,height:600};
+  let prop={url:'/nk/spa/custom/static/index.html#/main/cs/app/59d06fdc7d5b4e7e8e888e4505639ce3_upload?modeId='+ModeForm.getCardUrlInfo().modeId+'&urlbillid='+ModeForm.getCardUrlInfo().billid,style:style};
+  ModeForm.openCustomDialog(prop,buttons)
+}
