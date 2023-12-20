@@ -77,7 +77,10 @@ class EmployeeManagerStore {
     };
     
 }
+
+
 window.__employeeManagerStore = new EmployeeManagerStore()
+
 
 
 regOvProps('weappUi', 'Table', (props) => {
@@ -89,6 +92,8 @@ regOvProps('weappUi', 'Table', (props) => {
      })
      if(first_work_date){
        // props.store.requestData()
+       props.onRowClick=() => {}
+
        __employeeManagerStore.tableData = props.data
        __employeeManagerStore.tableStore = props.store
        first_work_date.bodyRender=(record, options) => {
@@ -117,6 +122,29 @@ regOvProps('weappUi', 'Table', (props) => {
    }
   return props;
 }, 0);
+
+
+regOvProps('weappUi', 'Trigger', (props) => { 
+  let {pathname} = window.location
+   if(pathname.indexOf("/cusapp/3188992086533844163/cusapp_combination/hrm/hr/employeeManager") !=-1){
+     if(props.weId.indexOf('_72bp0c') > -1){
+        props.children.props.onClick=(e) => {
+          e.stopPropagation()
+        }
+     }
+   }
+  return props;
+}, 0);
+
+// regOvProps('weappUi', 'Popover', (props) => { 
+//   let {pathname} = window.location
+//    if(pathname.indexOf("/cusapp/3188992086533844163/cusapp_combination/hrm/hr/employeeManager") !=-1){
+//      if(props.weId.indexOf('_seh6mx') > -1){
+//         debugger
+//      }
+//    }
+//   return props;
+// }, 0);
 
 regOvProps('weappHrm', 'ComTitleButtons', (props) => {
   let {pathname} = window.location
