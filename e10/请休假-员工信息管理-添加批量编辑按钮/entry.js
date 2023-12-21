@@ -136,15 +136,18 @@ regOvProps('weappUi', 'Trigger', (props) => {
   return props;
 }, 0);
 
-// regOvProps('weappUi', 'Popover', (props) => { 
-//   let {pathname} = window.location
-//    if(pathname.indexOf("/cusapp/3188992086533844163/cusapp_combination/hrm/hr/employeeManager") !=-1){
-//      if(props.weId.indexOf('_seh6mx') > -1){
-//         debugger
-//      }
-//    }
-//   return props;
-// }, 0);
+regOvProps('weappUi', 'Popover', (props) => { 
+  let {pathname} = window.location
+   if(pathname.indexOf("/cusapp/3188992086533844163/cusapp_combination/hrm/hr/employeeManager") !=-1){
+     if(props.weId.indexOf('_seh6mx') > -1){
+        props.style={
+          'width': 0,
+          'overflow': 'hidden'
+        }
+     }
+   }
+  return props;
+}, 0);
 
 regOvProps('weappHrm', 'ComTitleButtons', (props) => {
   let {pathname} = window.location
