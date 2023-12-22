@@ -83,45 +83,45 @@ window.__employeeManagerStore = new EmployeeManagerStore()
 
 
 
-regOvProps('weappUi', 'Table', (props) => {
-  let {pathname} = window.location
-   if(pathname.indexOf("/cusapp/3188992086533844163/cusapp_combination/hrm/hr/employeeManager") !=-1){
-     let first_work_date = props.columns?.find((item) => {
-       
-       return item.dataIndex == "first_work_date"
-     })
-     if(first_work_date){
-       // props.store.requestData()
-       props.onRowClick=() => {}
+  regOvProps('weappUi', 'Table', (props) => {
+    let {pathname} = window.location
+    if(pathname.indexOf("/cusapp/3188992086533844163/cusapp_combination/hrm/hr/employeeManager") !=-1){
+      let first_work_date = props.columns?.find((item) => {
+        
+        return item.dataIndex == "first_work_date"
+      })
+      if(first_work_date){
+        // props.store.requestData()
+        props.onRowClick=() => {}
 
-       __employeeManagerStore.tableData = props.data
-       __employeeManagerStore.tableStore = props.store
-       first_work_date.bodyRender=(record, options) => {
-          return (
-                  <React.Suspense fallback={() => {}}>
-                    <NewDatePicker  
-                      value={props.data[options.row].first_work_date} 
-                      allowClear={false}
-                      store={__employeeManagerStore}
-                      onChange={action(function(value) {
-                      
-                        props.data[options.row].first_work_date = value
-                        props.data.push({})
-                        props.data.pop()
-                      })}
-                    />
-                  </React.Suspense>
-            )
-       }
+        __employeeManagerStore.tableData = props.data
+        __employeeManagerStore.tableStore = props.store
+        first_work_date.bodyRender=(record, options) => {
+            return (
+                    <React.Suspense fallback={() => {}}>
+                      <NewDatePicker  
+                        value={props.data[options.row].first_work_date} 
+                        allowClear={false}
+                        store={__employeeManagerStore}
+                        onChange={action(function(value) {
+                        
+                          props.data[options.row].first_work_date = value
+                          props.data.push({})
+                          props.data.pop()
+                        })}
+                      />
+                    </React.Suspense>
+              )
+        }
 
-      // first_work_date.bodyRender = () => {
-      //   return 1111
-      // }
-     }
-   
-   }
-  return props;
-}, 0);
+        // first_work_date.bodyRender = () => {
+        //   return 1111
+        // }
+      }
+    
+    }
+    return props;
+  }, 0);
 
 
 regOvProps('weappUi', 'Trigger', (props) => { 
