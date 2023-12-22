@@ -1,5 +1,67 @@
-_Route@97jp4b_LayoutFlags@6k42ko_Element@3wrojc@element-164_Workflow@2ndq70_EContent@4lql0m_WeaTable@x9vk4c_Table@dhb9s7_RcTable@n00qc4
+{
+    "rcnr": "测试4，全天",
+    "dd": "",
+    "zbdw": "",
+    "rcrq": "2023-12-18",
+    "cjrq": "2023-12-18 14:50",
+    "txr": "865979004714516499",
+    "time2222": "----",
+    "ldmskjnr": "",
+    "xm": "879025710789287953",
+    "sxwqt": "2",
+    "rcid": "",
+    "id": "943527937675223045",
+    "time": "",
+    "rcjssj": "",
+    "rcsj": "",
+    "day": "2023-12-18",
+    "username": "王妍",
+    "name": "王妍",
+    "rid": "879025710789287953",
+    "daytime": "2023-12-18 "
+}
+{
+    "rcnr": "测试",
+    "dd": "",
+    "zbdw": "",
+    "rcrq": "2023-12-18",
+    "cjrq": "2023-12-22 14:24",
+    "txr": "865979004714516499",
+    "time2222": "----",
+    "ldmskjnr": "",
+    "xm": "879025710789287953",
+    "sxwqt": "0",
+    "rcid": "",
+    "id": "945005646839316490",
+    "time": "",
+    "rcjssj": "",
+    "rcsj": "",
+    "day": "2023-12-18",
+    "username": "王妍",
+    "name": "王妍",
+    "rid": "879025710789287953",
+    "daytime": "2023-12-18 "
+}
 
-_Route@97jp4b_LayoutFlags@6k42ko_Element@3wrojc@element-164_Workflow@2ndq70_EContent@4lql0m_WeaTable@x9vk4c_Table@dhb9s7_RcTable@n00qc4
-
-_Route@97jp4b_LayoutFlags@6k42ko_Element@3wrojc@element-166_FormModeCustomSearch@p0ne8e_EContent@qx22ge_FmcsTable@xax7bj_WeaTable@8ykdga_Table@dhb9s7_RcTable@n00qc4
+{
+    "rcnr": "测试",
+    "dd": "",
+    "zbdw": "",
+    "rcrq": "2023-12-18",
+    "cjrq": "2023-12-22 14:24",
+    "txr": "865979004714516499",
+    "time2222": "----",
+    "ldmskjnr": "",
+    "xm": "872307415485603840",
+    "sxwqt": "0",
+    "rcid": "",
+    "id": "945005651243335701",
+    "time": "",
+    "rcjssj": "",
+    "rcsj": "",
+    "day": "2023-12-18",
+    "username": "测试局长",
+    "name": "测试局长",
+    "rid": "872307415485603840",
+    "daytime": "2023-12-18 "
+}
